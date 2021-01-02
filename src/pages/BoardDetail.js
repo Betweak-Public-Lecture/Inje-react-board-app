@@ -1,6 +1,8 @@
 import React from 'react';
 import {Container, Row, Col, Button, ButtonGroup} from 'react-bootstrap';
 
+import Comment from '../components/Comment';
+
 
 export default function BoarDetail(props){
   const {boardId} = props.match.params;
@@ -9,6 +11,8 @@ export default function BoarDetail(props){
     title: '', 
     content: ''
   })
+  const [boardCommentList, setBoardCommentList] = React.useState([])
+  const [reqCount, setReqCount] = React.useState(0);
 
   React.useEffect(()=>{
     fetch(`/api/board/${boardId}`, {
@@ -23,6 +27,64 @@ export default function BoarDetail(props){
       }
     })
   }, [])
+
+  React.useEffect(()=>{
+    fetch(`/api/board/${boardId}/comment`, {
+      method: "GET",
+    }).then(response=>{
+      return response.json();
+    }).then(data=>{
+      if(data.status === 'Success'){
+        setBoardCommentList(data.result);
+      } else{
+        alert(data.result);
+      }
+    })
+  }, [reqCount])
+
+  // 1. Comment POST요청 함수만들기
+  const submitComment = React.useCallback((commentContent)=>{
+    fetch(`/api/board/${boardId}/comment`, {
+      method: "POST",
+      headers: {
+        "CONTENT-TYPE": "application/json"
+      },
+      body: JSON.stringify(commentContent)
+    }).then(response=>{
+      return response.json()
+    }).then(data=>{
+      if(data.status === 'Success'){
+        setReqCount(reqCount+1)
+      } else{
+        alert(data.result);
+      }
+    })
+  }, [boardId, reqCount])
+  // 2. Comment 컴포넌트에 함수 전달하기(PROPS)
+  // 3. Comment 컴포넌트에서 함수 받아서 사용하기.
+
+
+  // --------------------------------------------------
+  // - Comment 삭제 함수 만드시고, 기능을 구현하세요.
+  const deleteComment = React.useCallback((commentId)=>{
+    if(! window.confirm("정말 삭제하시겠습니까?")){
+      return 
+    }
+    fetch(`/api/board/comment/${commentId}`, {
+      method: 'DELETE'
+    }).then(response=>{
+      return response.json();
+    }).then(data=>{
+      if(data.status === 'Success'){
+        setReqCount(reqCount+1)
+      } else{
+        alert(data.result)
+      }
+    })
+  }, [reqCount])
+  
+
+
 
   // 삭제 함수 구현.
   // ==> 삭제버튼 클릭시 삭제가 되도록 구현하시오.
@@ -73,6 +135,11 @@ export default function BoarDetail(props){
           </div>
         </Col>
       </Row>
+      
+      <Row style={{paddingTop: 40}}>
+        <Comment boardId={boardId} commentList={boardCommentList} submitComment={submitComment} deleteComment={deleteComment} />
+      </Row>
+
     </Container>
   )
 }
