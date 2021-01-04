@@ -13,24 +13,15 @@ import BoardList from './pages/BoardList';
 import WriteBoard from './pages/WriteBoard';
 import BoardDetail from './pages/BoardDetail';
 import BoardEdit from './pages/BoardEdit';
+import CheckListWrite from './pages/CheckListWrite';
 
+import CarList from './pages/CarList';
+import CarDetail from './pages/CarDetail';
 import MyNavbar from './components/MyNavbar';
 
 function App() {
   return (
-    // // <HelloWorld></HelloWorld>
-    // <div>
-    //   {/* <CaptionImage imgUrl="https://pbs.twimg.com/profile_images/552851967026794496/w67YTKGZ.png" caption="낙타" /> */}
-    //   {/* 고양이사진을 CaptionImage컴포넌트에 전달해서 Rendering */}
-    //   {/* <CaptionImage imgUrl="https://newsimg.hankookilbo.com/cms/articlerelease/2019/04/29/201904291390027161_3.jpg" caption="고양이" /> */}
-    //   {/* <CaptionImage imgUrl="https://img.etnews.com/photonews/1809/1109937_20180913110406_831_0001.jpg" caption="이건 트럭입니다." /> */}
-    //   {/* <Blink text="이 문자는" />
-    //   <Blink text="2초에 한번" />
-    //   <Blink text="깜빡입니다." /> */}
 
-    //   <CaptionImageList />
-
-    // </div>
     <Router>
       
       <MyNavbar />
@@ -41,6 +32,12 @@ function App() {
         <Route path='/board' exact component={BoardList} />
         <Route path='/board/:boardId/edit' exact component={BoardEdit} />
         <Route path='/board/:boardId' exact component={BoardDetail} />
+
+        {/* CarList */}
+        <Route path='/car' exact component={CarList} />
+        <Route path='/car/:carId' exact component={CarDetail} />
+        <Route path='/car/:carId/checklistWrite' exact component={CheckListWrite} />
+
 
       </Switch>
     </Router>

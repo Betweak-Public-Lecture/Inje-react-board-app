@@ -10,6 +10,7 @@ export default function MyNavbar(props){
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <Link to='/board' component={Nav.Link}>게시판</Link>
+          <Link to='/car' component={Nav.Link}>안전점검</Link>
         </Nav>
         <Nav inline>
           <Link to="/login" component={Nav.Link}>Login</Link>
